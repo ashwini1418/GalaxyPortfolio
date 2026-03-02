@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy Portfolio</title>
+    <style>
+        body { margin: 0; background: #000; overflow: hidden; }
+
+        #ribbon{
+            position:absolute;
+            top:10px;
+            left:50%;
+            transform:translateX(-50%);
+            display:flex;
+            justify-content:space-around;
+            width:1170px;      
+            gap:2px;
+            padding:10px 50px;
+            background:rgba(0,0,0,0);
+            border-radius:15px;
+            backdrop-filter:blur(8px);
+            border:1px solid #181a18;
+            font-family:'Share Tech Mono', monospace;
+            color:#99a399;
+            box-shadow:0px 0px 0px #028f0c;
+            }
+            .planetInfo{
+                padding:5px 10px;
+                border:1px solid #464b47;
+                border-radius:6px;
+                font-size:11px;
+            }
+        #ribbon a{color:#99a399;
+            text-decoration:none;
+            transition:all 0.3s ease;
+        }
+        #ribbon a:hover{color:#00ff88;
+            text-shadow:
+            0 0 5px #00ff88,
+            0 0 10px #00ff88,
+            0 0 20px #00ff88;
+        }
+        
+        #skillPanel{
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            max-height:80vh;   /* Limits height */
+            overflow-y:auto;
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%,-50%);
+            width:600px;
+            padding:30px;
+            background:rgba(0,0,0,0.6);
+            color:white;
+            border-radius:15px;
+            font-family: 'Share Tech Mono', monospace;
+            color:#06910B;
+            box-shadow:0px 0px 0px #3366ff;
+            backdrop-filter:blur(0px);
+        }
+
+        #projectPanel{
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%,-50%);
+            width:600px;
+            padding:30px;
+            background:rgba(0,0,0,0.6);
+            color:white;
+            border-radius:15px;
+            font-family: 'Share Tech Mono', monospace;
+            color:#06910B;
+            box-shadow:0px 0px 0px #3366ff;
+            backdrop-filter:blur(0px);
+        }
+
+        #aboutPanel{
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%,-50%);
+            width:600px;
+            padding:30px;
+            background:rgba(0,0,0,0.6);
+            color:white;
+            border-radius:15px;
+            font-family: 'Share Tech Mono', monospace;
+            color:#06910B;
+            box-shadow:0px 0px 0px #3366ff;
+            backdrop-filter:blur(0px);
+        }
+
+        #educationPanel{
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%,-50%);
+            width:600px;
+            padding:30px;
+            background:rgba(0,0,0,0.6);
+            color:white;
+            border-radius:15px;
+            font-family: 'Share Tech Mono', monospace;
+            color:#06910B;
+            box-shadow:0px 0px 0px #3366ff;
+            backdrop-filter:blur(0px);
+        }
+        
+        #experiencePanel{
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%,-50%);
+            width:600px;
+            padding:30px;
+            background:rgba(0,0,0,0.6);
+            color:white;
+            border-radius:15px;
+            font-family: 'Share Tech Mono', monospace;
+            color:#06910B;
+            box-shadow:0px 0px 0px #3366ff;
+            backdrop-filter:blur(0px);
+        }
+
+        #resumePanel{
+            
+            position:fixed;
+            top:50%;
+            left:50%;
+            transform:translate(-50%,-50%);
+            width:700px;
+            padding:30px;
+            background:rgba(0,0,0,0.6);
+            border-radius:15px;
+            font-family:'Share Tech Mono';
+            color:#00ff88;
+            border:0px solid #00ff88;
+        }
+
+        #contactPanel{
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%,-50%);
+            width:600px;
+            padding:30px;
+            background:rgba(0,0,0,0.6);
+            color:white;
+            border-radius:15px;
+            font-family: 'Share Tech Mono', monospace;
+            color:#06910B;
+            box-shadow:0px 0px 0px #3366ff;
+            backdrop-filter:blur(0px);
+        }
+
+        #planetLabel{
+            position:absolute;
+            color:#00ff88;
+            font-family:'Share Tech Mono', monospace;
+            font-size:12px;
+            pointer-events:none;
+            display:none;
+            text-shadow:
+            0 0 5px #00ff88,
+            0 0 10px #00ff88;
+        }
+
+        /* this is for smooth panel animation */
+        #skillPanel,#projectPanel,#aboutPanel,#educationPanel,#experiencePanel,#contactPanel,#resumePanel{
+            opacity:0;
+            visibility:hidden;
+            transform:translate(-50%,-40%);
+            transition:opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        /* this is for scrolling */
+        #skillPanel,#projectPanel,#aboutPanel,#educationPanel,#experiencePanel,#contactPanel{
+            max-height:80vh;
+            overflow-y:auto;
+            scroll-behavior:smooth;
+            /* Hide scrollbar */
+            scrollbar-width:none;
+            -ms-overflow-style:none;
+        }
+        /* Chrome / Edge / Safari */
+        #skillPanel::-webkit-scrollbar,#projectPanel::-webkit-scrollbar,#aboutPanel::-webkit-scrollbar,#educationPanel::-webkit-scrollbar,#experiencePanel::-webkit-scrollbar,#contactPanel::-webkit-scrollbar{
+        display:none;
+        }
+
+        #contactPanel input,#contactPanel textarea{
+            width:100%;
+            padding:10px;
+            margin-top:5px;
+            background:black;
+            color:#8a9da1;
+            border:1px solid #00ff88;
+            font-family:'Share Tech Mono';
+            border-radius:5px;
+        }
+        #contactPanel button{
+            padding:10px 20px;
+            background:#5a5c5a;
+            border:none;
+            border-radius:5px;
+            margin-top:10px;
+        }
+
+        body{
+cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><text y='30' font-size='30' fill='%2300ff88'>⊹</text></svg>") 16 16, auto;
+}
+
+        .panel-active{opacity:1 !important;visibility:visible !important;transform:translate(-50%,-50%) !important;}
+
+        .planetInfo:hover{
+    border-color:#00ff88;
+    box-shadow:0 0 10px #00ff88;
+    transition:0.3s;
+}
+
+    </style>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.174.0/build/three.module.js",
+            "three/webgpu": "https://cdn.jsdelivr.net/npm/three@0.174.0/build/three.webgpu.js",
+            "three/tsl": "https://cdn.jsdelivr.net/npm/three@0.174.0/build/three.tsl.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.174.0/examples/jsm/"
+        }
+    }
+    </script>
+
+    <!-- this is cdn link for mail -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>(function(){emailjs.init("97b7wBEeT-5oczqE8");})();</script>
+
+
+</head>
+<body>
+    <script type="module" src="main.js"></script>
+
+<div id="ribbon">
+        <div class="planetInfo">
+            ☀️ Sun - About Me 
+        </div>    
+        <div class="planetInfo">
+            ⚪ Mercury - Education
+        </div>
+        <div class="planetInfo">
+            🟠 Venus - Experience
+        </div>
+        <div class="planetInfo">
+            🌍 Earth - Projects
+        </div>
+        <div class="planetInfo">
+            🔴 Mars - Skills
+        </div>
+        <div class="planetInfo">
+            🌕 Jupter - Resume
+        </div>
+        <div class="planetInfo">
+            🪐 Saturn - Contact
+        </div>
+        <div class="planetInfo">
+            <a href="resume.pdf" download style="color:#99a399; text-decoration:none;">
+                Download Resume
+            </a>
+        </div>
+        <div class="planetInfo">
+            <span id="musicToggle" style="cursor:pointer;">Music Off</span>
+        </div>
+</div>
+    
+<div id="skillPanel">
+        <h1>Skills</h1>
+        <h2>Programming</h2>
+        <ul><li>C++</li>
+        <li>Python</li>
+        <li>C</li>
+        <li>C#</li>
+        <li>Go</li>
+        <li>SQL</li>
+        <li>Shell Scripting</li>
+        </ul>
+        <h2>Web Development</h2>
+        <ul><li>Django</li>
+        <li>ASP.NET Core</li>
+        <li>Flask</li>
+        <li>HTML & JavaScript</li>
+        <li>REST APIs</li>
+        </ul>
+        <h2>Machine Learning</h2>
+        <ul>
+        <li>Pandas & NumPy</li>
+        <li>Scikit-Learn</li>
+        <li>TensorFlow</li>
+        <li>Data Preprocessing</li>
+        <li>Feature Engineering</li>
+        </ul>
+        <h2>Tools</h2>
+        <ul>
+        <li>Linux</li>
+        <li>Git & GitHub</li>
+        <li>Postman</li>
+        <li>SQL Server</li>
+        <li>Jupyter Notebook</li>
+        </ul>
+        <button onclick="closeSkill()">Back</button>
+</div>
+
+<div id="projectPanel">
+
+        <h1>Projects</h1>
+        <h2>Email Prioritizer</h2>
+        <p>AI-powered email management system built using Flask and Machine Learning.</p>
+        <ul><li>Full-stack web application with REST APIs</li>
+        <li>Interactive dashboard using Plotly</li>
+        <li>Reduced API latency by 20%</li></ul>
+        <h2>Student Grievance Management System</h2>
+        <p>Web platform for students to submit and track grievances.</p>
+        <ul><li>Built using Django and JavaScript</li>
+        <li>3NF database design</li>
+        <li>Admin dashboard for issue management</li></ul>
+        <h2>Heart Disease Detection</h2>
+        <p>Machine learning model for predicting heart disease risk.
+        </p><ul><li>Analyzed 10,000+ patient records</li>
+        <li>Precision/Recall score of 0.9</li>
+        <li>Built using Python and Scikit-learn</li></ul>
+        <button onclick="closeProjects()">Back</button>
+</div>
+
+<div id="aboutPanel">  
+    <h1>About Me</h1>
+
+    <p>
+        Hi, I'm <b>Ashwini Khodre</b>, a Mechanical Engineering student at 
+        <b>IIT Jammu</b> interested in modern software technologies and 
+        building real-world applications.
+    </p>
+
+    <h2>Technical Interests</h2>
+
+    <ul>
+        <li>Software Development</li>
+        <li>Full Stack Development</li>
+        <li>Blockchain & Web3 Development</li>
+        <li>Automation Pipelines</li>
+        <li>Machine Learning</li>
+    </ul>
+
+    <p>
+        Currently working as a <b>SDE Intern at Tuning Bill Current</b>,
+        developing backend systems and web3 applications.
+    </p>
+
+    <h2>Co-curricular Activities</h2>
+
+    <ul>
+        <li>Captain – IIT Jammu Basketball Team</li>
+        <li>2× Gold Medalist in Intra-IIT Basketball</li>
+        <li>Leadership roles in college clubs</li>
+    </ul>
+
+    <button onclick="closeAbout()">Back</button>
+</div>
+
+<div id="educationPanel">  
+    <h1>Education</h1>
+
+    <h2>B.Tech – Mechanical Engineering</h2>
+    <p>Indian Institute of Technology, Jammu</p>
+    <ul>
+        <li>CGPA: 7.68 (Till 7th Semester)</li>
+        <li>Expected Graduation: 2026</li>
+    </ul>
+
+    <h2>Class XII</h2>
+    <p>Queen Mary’s Hr. Sec. School</p>
+    <ul>
+        <li>Percentage: 90%</li>
+        <li>Year: 2021</li>
+    </ul>
+
+    <h2>Class X</h2>
+    <p>Queen Mary’s Hr. Sec. School</p>
+    <ul>
+        <li>Percentage: 89.8%</li>
+        <li>Year: 2019</li>
+    </ul>
+
+    <button onclick="closeEducation()">Back</button>
+</div>
+
+<div id="experiencePanel">  
+    <h1>Experience</h1>
+
+    <h2>SDE Intern – Tuning Bill Current (Jaipur)</h2>
+    <ul>
+        <li>Developed a Banking System web application using ASP.NET Core (C#).</li>
+        <li>Implemented secure user authentication and role-based access.</li>
+        <li>Built APIs for core banking operations.</li>
+        <li>Designed account management and transaction workflows using Entity Framework Core and SQL Server.</li>
+    </ul>
+
+    <h2>Research Intern – IIT Gandhinagar (Jun 2025 – Aug 2025)</h2>
+    <ul>
+        <li>Developed a shell scripting pipeline generating 500+ Abaqus input files.</li>
+        <li>Automated FEM simulations using Neper-generated microstructures.</li>
+        <li>Built machine learning models achieving 92% validation accuracy.</li>
+        <li>Extracted geometric and statistical features from tessellation data.</li>
+    </ul>
+
+    <button onclick="closeExperience()">Back</button>
+</div>
+
+<div id="resumePanel">
+    <h1>Resume</h1>
+    <iframe src="resume.pdf"width="110%"height="400px"style="border:none;"></iframe>
+    <br>
+    <!-- <p>Download my Resume:</p> -->
+    <a href="resume.pdf" download>Download Resume</a>
+    <br><br>
+    <button onclick="closeResume()">Back</button>
+</div>
+
+<div id="contactPanel">  
+    <h1>Contact Me</h1>
+    <input id="name" placeholder="Your Name">
+    <input id="email" placeholder="Your Email">
+    <textarea id="message" rows="5" placeholder="Your Message"></textarea>
+    <!-- Error Message -->
+    <p id="formError" style="color:red; font-size:12px;"></p>
+    <br>
+    <button id="sendBtn" onclick="sendMail()">Send Message</button>
+    <br><br>
+    <button onclick="closeContact()">Back</button>
+</div>
+
+
+<script>    
+
+function closeSkill(){
+    document.getElementById("skillPanel").classList.remove("panel-active");
+}
+
+function closeProjects(){
+    document.getElementById("projectPanel").classList.remove("panel-active");
+}
+
+function closeAbout(){
+    document.getElementById("aboutPanel").classList.remove("panel-active");
+}
+
+function closeEducation(){
+    document.getElementById("educationPanel").classList.remove("panel-active");
+}
+
+function closeExperience(){
+    document.getElementById("experiencePanel").classList.remove("panel-active");
+}
+
+function closeResume(){
+    document.getElementById("resumePanel").classList.remove("panel-active");
+}
+
+function closeContact(){
+    document.getElementById("contactPanel").classList.remove("panel-active");
+}
+
+function sendMail(){
+const name = document.getElementById("name").value.trim();
+const email = document.getElementById("email").value.trim();
+const message = document.getElementById("message").value.trim();
+const error = document.getElementById("formError");
+const button = document.getElementById("sendBtn");
+
+// Clear previous error
+error.innerText = "";
+
+// Basic validation
+if(!name || !email || !message){
+error.innerText = "Please fill all fields.";
+return;
+}
+
+// Email format validation
+const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+if(!email.match(emailPattern)){
+error.innerText = "Please enter a valid email address.";
+return;
+}
+
+// If validation passed → disable button
+button.disabled = true;
+button.innerText = "Sending...";
+
+const params = { name, email, message };
+
+emailjs.send("SERVICE_ID","TEMPLATE_ID",params)
+
+.then(function(){
+
+button.innerText = "Sent ✓";
+
+document.getElementById("name").value="";
+document.getElementById("email").value="";
+document.getElementById("message").value="";
+
+setTimeout(()=>{
+closeContact();
+button.disabled = false;
+button.innerText = "Send Message";
+},1000);
+
+})
+
+.catch(function(){
+error.innerText = "Failed to send. Please try again.";
+button.disabled = false;
+button.innerText = "Send Message";
+});
+
+}
+</script>
+
+<div id="planetLabel"></div>
+</body>
+</html>

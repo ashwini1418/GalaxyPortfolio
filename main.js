@@ -23,7 +23,10 @@ let musicPlaying = false;
 function init() {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 2000);
-    camera.position.set(0, 80, 140);
+    if(window.innerWidth < 768){camera.position.set(0, 120, 200); // zoom out for small screens
+    }else{
+        camera.position.set(0, 80, 140);
+    }
 
     renderer = new THREE.WebGPURenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -42,7 +45,7 @@ function init() {
 
 
     // 3. Mercury as Education
-    const educationData = { name: "eduaction", tex: 'textures/mercury.jpg', size: 2.5, dist: 30, url: "education" };
+    const educationData = { name: "eduaction", tex: 'textures/mercury.jpg', size: 4, dist: 30, url: "education" };
     const education = createPlanet(educationData.name, educationData.tex, educationData.size, educationData.dist, educationData.url);
     
     scene.add(education.group);
@@ -52,7 +55,7 @@ function init() {
     education.group.rotation.y = Math.PI;   // 45 degrees
 
     // Venus as Experience
-    const expData = { name: "experience", tex: 'textures/venus.jpg', size: 2.5, dist: 40, url: "experience" };
+    const expData = { name: "experience", tex: 'textures/venus.jpg', size: 3.5, dist: 40, url: "experience" };
     const exp = createPlanet(expData.name, expData.tex, expData.size, expData.dist, expData.url);
     
     scene.add(exp.group);
@@ -63,7 +66,7 @@ function init() {
 
 
     // 3. earth as Skills
-    const earthData = { name: "Projects", tex: 'textures/earth.jpg', size: 3.5, dist: 50, url: "Projects" };
+    const earthData = { name: "Projects", tex: 'textures/earth.jpg', size: 7, dist: 50, url: "Projects" };
     const earth = createPlanet(earthData.name, earthData.tex, earthData.size, earthData.dist, earthData.url);
     
     scene.add(earth.group);
@@ -73,7 +76,7 @@ function init() {
     earth.group.rotation.y = Math.PI;   // 45 degrees
 
     // mars for Projects
-    const projectData = { name: "Skills", tex: 'textures/mars.jpg', size: 3, dist: 60, url: "Skills" };
+    const projectData = { name: "Skills", tex: 'textures/mars.jpg', size: 8, dist: 60, url: "Skills" };
     const mars = createPlanet(projectData.name, projectData.tex, projectData.size, projectData.dist, projectData.url);
     
     scene.add(mars.group);
@@ -83,7 +86,7 @@ function init() {
     earth.group.rotation.y = 3*Math.PI/4;   // 45 degrees
 
     //Jupiter as Resume
-    const jupiterData = { name: "resume", tex: 'textures/jupiter.png', size: 5, dist: 80, url: "resume" };
+    const jupiterData = { name: "resume", tex: 'textures/jupiter.png', size: 11, dist: 80, url: "resume" };
     const jupiter = createPlanet(jupiterData.name, jupiterData.tex, jupiterData.size, jupiterData.dist, jupiterData.url);
     
     scene.add(jupiter.group);
@@ -93,7 +96,7 @@ function init() {
     jupiter.group.rotation.y = 4*Math.PI/3;   // 45 degrees
 
     //Saturn as Contact
-    const saturnData = { name: "contact", tex: 'textures/jupiter.png', size: 3, dist: 100, url: "contact" };
+    const saturnData = { name: "contact", tex: 'textures/jupiter.png', size: 7, dist: 100, url: "contact" };
     const saturn = createSaturn(saturnData.name, saturnData.tex, saturnData.size, saturnData.dist, saturnData.url);
     
     scene.add(saturn.group);
@@ -122,6 +125,14 @@ function init() {
     const light = new THREE.PointLight(0xffffff, 8000, 1000); // Light from the sun
     scene.add(light);
     scene.add(new THREE.AmbientLight(0x404040));
+
+    // ===== Handle Window Resize =====
+    window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+});
 
     animate();
 }

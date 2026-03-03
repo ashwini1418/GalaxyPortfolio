@@ -10,7 +10,7 @@ const texture =
 loader.load('textures/sun.jpg');
 
 const geometry =
-new THREE.SphereGeometry(9,64,64);
+new THREE.SphereGeometry(15,64,64);
 
 const material =
 new THREE.MeshBasicMaterial({
@@ -26,7 +26,7 @@ material
 /* FLAME GLOW */
 
 const glowGeometry =
-new THREE.SphereGeometry(10,64,64);
+new THREE.SphereGeometry(18,64,64);
 
 const glowMaterial =
 new THREE.MeshBasicMaterial({
@@ -50,5 +50,6 @@ glowMaterial
 sun.add(glow);
 
 return sun;
+
 
 }

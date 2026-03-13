@@ -20,6 +20,33 @@ ambientMusic.loop = true;
 ambientMusic.volume = 0.2;
 let musicPlaying = false;
 
+let loadingProgress = 0;
+
+const manager = new THREE.LoadingManager();
+manager.onProgress = (url, loaded, total) => {
+    const percent = (loaded / total) * 100;
+    document.getElementById("progress").style.width = percent + "%";
+};
+manager.onLoad = () => {
+    document.getElementById("loadingScreen").style.display = "none";
+};
+
+const progressBar = document.getElementById("progress");
+
+const fakeLoader = setInterval(() => {
+
+    loadingProgress += 7;
+
+    if(progressBar){
+        progressBar.style.width = loadingProgress + "%";
+    }
+
+    if(loadingProgress >= 100){
+        clearInterval(fakeLoader);
+    }
+
+}, 80);
+
 function init() {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 2000);
@@ -135,6 +162,9 @@ function init() {
 });
 
     animate();
+    setTimeout(() => {
+    document.getElementById("loadingScreen").style.display = "none";
+}, 1500);
 }
 
 async function animate() {
@@ -154,6 +184,11 @@ async function animate() {
     controls.update();
 
     await renderer.renderAsync(scene, camera);
+    if(firstFrame){
+        const loader = document.getElementById("loadingScreen");
+        if(loader) loader.style.display = "none";
+        firstFrame = false;
+    }
 
 }
 
@@ -255,13 +290,13 @@ function typePanel(panelId, speed = 15){
 // ===== Close panel when clicking outside =====
 document.addEventListener("click", function(e){
     const panels = document.querySelectorAll("#skillPanel, #projectPanel, #aboutPanel, #educationPanel, #experiencePanel, #contactPanel, #resumePanel, #achievementPanel");
-panels.forEach(panel => {
-    if(panel.classList.contains("panel-active")){
+    panels.forEach(panel => {
+        if(panel.classList.contains("panel-active")){
     // If click is NOT inside panel
-    if(!panel.contains(e.target)){
-        panel.classList.remove("panel-active");
+        if(!panel.contains(e.target)){
+            panel.classList.remove("panel-active");
+        }
     }
-}
 });
 });
 

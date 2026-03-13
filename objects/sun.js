@@ -1,3 +1,4 @@
+
 import * as THREE from 'three/webgpu';
 
 export function createSun() {
@@ -52,3 +53,4 @@ sun.add(glow);
 return sun;
 
 }
+

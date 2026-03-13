@@ -1,3 +1,4 @@
+
 import * as THREE from 'three/webgpu';
 
 export function createPlanet(name, texturePath, size, distance, url) {
@@ -25,4 +26,5 @@ export function createPlanet(name, texturePath, size, distance, url) {
     group.add(mesh);
 
     return {group: group,mesh: mesh,url: url};
-}
+
+    }

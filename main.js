@@ -13,12 +13,12 @@ const rotatingPlanets = [];
 let label = document.getElementById("planetLabel");
 
 let clickSound = new Audio("sounds/click.mp3");
-clickSound.volume = 0.4;   // adjust if too loud
+clickSound.volume = 0.5;   // adjust if too loud
 
 let ambientMusic = new Audio("sounds/ambient.mp3");
 ambientMusic.loop = true;
-ambientMusic.volume = 0.2;
-let musicPlaying = false;
+ambientMusic.volume = 0.3;
+let musicPlaying = true;
 
 let loadingProgress = 0;
 

@@ -18,7 +18,7 @@ clickSound.volume = 0.5;   // adjust if too loud
 let ambientMusic = new Audio("sounds/ambient.mp3");
 ambientMusic.loop = true;
 ambientMusic.volume = 0.3;
-let musicPlaying = true;
+let musicPlaying = false;
 
 let loadingProgress = 0;
 
@@ -304,7 +304,9 @@ document.addEventListener("click", function(e){
 document.addEventListener("DOMContentLoaded", () => {
 
 const toggle = document.getElementById("musicToggle");
-
+ambientMusic.play();
+musicPlaying = true;   
+toggle.innerText = "Music On";
 toggle.addEventListener("click", () => {
 
 if(!musicPlaying){

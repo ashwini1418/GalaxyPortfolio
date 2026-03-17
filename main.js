@@ -304,9 +304,7 @@ document.addEventListener("click", function(e){
 document.addEventListener("DOMContentLoaded", () => {
 
 const toggle = document.getElementById("musicToggle");
-ambientMusic.play();
-musicPlaying = true;   
-toggle.innerText = "Music On";
+
 toggle.addEventListener("click", () => {
 
 if(!musicPlaying){

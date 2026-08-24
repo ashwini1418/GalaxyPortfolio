@@ -11,8 +11,10 @@ export function createPlanet(name, texturePath, size, distance, url) {
 
     const material =new THREE.MeshStandardMaterial({
         map: texture,
-        emissive: 0xfffff,     // blue glow
-        emissiveIntensity: 0.01});
+        roughness: 1,
+        metalness: 0,
+        emissive: 0x1c1e26,   // faint starlight floor so the night side reads as dark grey, not a black cutout
+        emissiveIntensity: 1.4});
 
     const mesh =
         new THREE.Mesh(geometry,material);

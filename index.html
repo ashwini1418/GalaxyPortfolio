@@ -2,9 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Galaxy Portfolio</title>
     <style>
+        *, *::before, *::after{ box-sizing: border-box; }
+
+        :root{
+            --accent:#00ff88;
+            --accent-dim:rgba(0,255,136,0.3);
+            --accent-glow:rgba(0,255,136,0.45);
+            --panel-bg:rgba(6,18,14,0.72);
+            --glow-outer:0 0 30px rgba(0,255,136,0.15);
+            --glow-inner:inset 0 0 40px rgba(0,255,136,0.05);
+        }
+
         body { margin: 0; background: #000; overflow: hidden; }
 
         #loadingScreen{
@@ -19,26 +30,30 @@
                 align-items:center;
                 z-index:9999;
                 font-family:'Share Tech Mono', monospace;
-                color:#00ff88;
+                color:var(--accent);
             }
 
         #loaderBox{
             text-align:center;
+            letter-spacing:2px;
+            text-shadow:0 0 10px var(--accent-glow);
         }
 
         #progressBar{
             width:300px;
             height:6px;
-            background:#222;
-            margin-top:10px;
+            background:#0a1510;
+            margin-top:14px;
             border-radius:4px;
             overflow:hidden;
+            border:1px solid var(--accent-dim);
         }
 
         #progress{
             width:0%;
             height:100%;
-            background:#00ff88;
+            background:var(--accent);
+            box-shadow:0 0 10px var(--accent);
             transition:width 0.2s;
         }
 
@@ -52,77 +67,56 @@
             width:95%;
             max-width:1170px;
             flex-wrap:wrap;
-            gap:6px;     
-            gap:2px;
-            padding:10px 50px;
-            background:rgba(0,0,0,0);
+            gap:6px;
+            padding:10px 24px;
+            background:rgba(6,18,14,0.45);
             border-radius:15px;
-            backdrop-filter:blur(8px);
-            border:1px solid #181a18;
+            backdrop-filter:blur(10px) saturate(140%);
+            -webkit-backdrop-filter:blur(10px) saturate(140%);
+            border:1px solid var(--accent-dim);
             font-family:'Share Tech Mono', monospace;
             color:#99a399;
-            box-shadow:0px 0px 0px #028f0c;
+            box-shadow:0 0 24px rgba(0,255,136,0.08);
             }
             .planetInfo{
                 padding:5px 10px;
-                border:1px solid #464b47;
+                border:1px solid rgba(0,255,136,0.18);
                 border-radius:6px;
                 font-size:11px;
+                transition:all 0.25s ease;
+                display:inline-flex;
+                align-items:center;
+                gap:6px;
+            }
+            .planetInfo[data-url]{cursor:pointer;}
+            .planetInfo[data-url]:focus-visible{
+                outline:1px solid var(--accent);
+                outline-offset:2px;
+            }
+            .planetInfo[data-url]:active,
+            .planetInfo a:active,
+            #musicToggle:active{
+                background:rgba(0,255,136,0.15);
+                border-color:var(--accent);
             }
         #ribbon a{color:#99a399;
             text-decoration:none;
             transition:all 0.3s ease;
         }
-        #ribbon a:hover{color:#00ff88;
+        #ribbon a:hover{color:var(--accent);
             text-shadow:
-            0 0 5px #00ff88,
-            0 0 10px #00ff88,
-            0 0 20px #00ff88;
-        }
-        
-        #skillPanel{
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            white-space: normal;
-            max-height:80vh;   /* Limits height */
-            overflow-y:auto;
-            position:absolute;
-            top:50%;
-            left:50%;
-            transform:translate(-50%,-50%);
-            width:90%;
-            max-width:600px;
-            padding:30px;
-            background:rgba(0,0,0,0.6);
-            color:white;
-            border-radius:15px;
-            font-family: 'Share Tech Mono', monospace;
-            color:#06910B;
-            box-shadow:0px 0px 0px #3366ff;
-            backdrop-filter:blur(0px);
+            0 0 5px var(--accent),
+            0 0 10px var(--accent),
+            0 0 20px var(--accent);
         }
 
-        #projectPanel{
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            white-space: normal;
-            position:absolute;
-            top:50%;
-            left:50%;
-            transform:translate(-50%,-50%);
-            width:90%;
-            max-width:600px;
-            padding:30px;
-            background:rgba(0,0,0,0.6);
-            color:white;
-            border-radius:15px;
-            font-family: 'Share Tech Mono', monospace;
-            color:#06910B;
-            box-shadow:0px 0px 0px #3366ff;
-            backdrop-filter:blur(0px);
+        .planetInfo:hover{
+            border-color:var(--accent);
+            box-shadow:0 0 10px var(--accent-glow);
         }
 
-        #aboutPanel{
+        /* ===== shared HUD console panels ===== */
+        #skillPanel,#projectPanel,#aboutPanel,#educationPanel,#experiencePanel,#contactPanel{
             word-wrap: break-word;
             overflow-wrap: break-word;
             white-space: normal;
@@ -132,102 +126,124 @@
             transform:translate(-50%,-50%);
             width:90%;
             max-width:600px;
-            padding:30px;
-            background:rgba(0,0,0,0.6);
-            color:white;
-            border-radius:15px;
-            font-family: 'Share Tech Mono', monospace;
-            color:#06910B;
-            box-shadow:0px 0px 0px #3366ff;
-            backdrop-filter:blur(0px);
-        }
-
-        #educationPanel{
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            white-space: normal;
-            position:absolute;
-            top:50%;
-            left:50%;
-            transform:translate(-50%,-50%);
-            width:90%;
-            max-width:600px;
-            padding:30px;
-            background:rgba(0,0,0,0.6);
-            color:white;
-            border-radius:15px;
-            font-family: 'Share Tech Mono', monospace;
-            color:#06910B;
-            box-shadow:0px 0px 0px #3366ff;
-            backdrop-filter:blur(0px);
-        }
-        
-        #experiencePanel{
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            white-space: normal;
-            position:absolute;
-            top:50%;
-            left:50%;
-            transform:translate(-50%,-50%);
-            width:90%;
-            max-width:600px;
-            padding:30px;
-            background:rgba(0,0,0,0.6);
-            color:white;
-            border-radius:15px;
-            font-family: 'Share Tech Mono', monospace;
-            color:#06910B;
-            box-shadow:0px 0px 0px #3366ff;
-            backdrop-filter:blur(0px);
+            padding:32px;
+            background:var(--panel-bg);
+            color:var(--accent);
+            border:1px solid var(--accent-dim);
+            border-radius:12px;
+            font-family:'Share Tech Mono', monospace;
+            box-shadow:var(--glow-outer), var(--glow-inner);
+            backdrop-filter:blur(14px) saturate(140%);
+            -webkit-backdrop-filter:blur(14px) saturate(140%);
         }
 
         #resumePanel{
-            
             position:fixed;
             top:50%;
             left:50%;
             transform:translate(-50%,-50%);
             width:95vw;
             max-width:1000px;
-            padding:30px;
-            background:rgba(0,0,0,0.6);
-            border-radius:15px;
-            font-family:'Share Tech Mono';
-            color:#00ff88;
-            border:0px solid #00ff88;
+            padding:32px;
+            background:var(--panel-bg);
+            border-radius:12px;
+            font-family:'Share Tech Mono', monospace;
+            color:var(--accent);
+            border:1px solid var(--accent-dim);
+            box-shadow:var(--glow-outer), var(--glow-inner);
+            backdrop-filter:blur(14px) saturate(140%);
+            -webkit-backdrop-filter:blur(14px) saturate(140%);
             overflow:auto;
             max-height:85vh;
         }
 
-        #contactPanel{
-            position:absolute;
-            top:50%;
-            left:50%;
-            transform:translate(-50%,-50%);
-            width:90%;
-            max-width:600px;
-            padding:30px;
-            background:rgba(0,0,0,0.6);
-            color:white;
-            border-radius:15px;
-            font-family: 'Share Tech Mono', monospace;
-            color:#06910B;
-            box-shadow:0px 0px 0px #3366ff;
-            backdrop-filter:blur(0px);
+        /* terminal-style headers: "> SECTION_NAME" with a scan-line divider */
+        #skillPanel h1,#projectPanel h1,#aboutPanel h1,#educationPanel h1,#experiencePanel h1,#contactPanel h1,#resumePanel h1{
+            text-transform:uppercase;
+            letter-spacing:3px;
+            font-size:20px;
+            margin:0 0 20px 0;
+            padding-bottom:14px;
+            border-bottom:1px solid var(--accent-dim);
+            text-shadow:0 0 8px var(--accent-glow);
         }
+        #skillPanel h1::before,#projectPanel h1::before,#aboutPanel h1::before,#educationPanel h1::before,#experiencePanel h1::before,#contactPanel h1::before,#resumePanel h1::before{
+            content:"> ";
+        }
+        #skillPanel h2,#projectPanel h2,#aboutPanel h2,#educationPanel h2,#experiencePanel h2,#contactPanel h2{
+            font-size:14px;
+            letter-spacing:1px;
+            color:var(--accent);
+            opacity:0.9;
+            margin-bottom:8px;
+        }
+
+        /* skills as HUD chips instead of bullet lists */
+        .chip-group{
+            list-style:none;
+            display:flex;
+            flex-wrap:wrap;
+            gap:8px;
+            padding:0;
+            margin:0 0 22px 0;
+        }
+        .chip-group li{
+            border:1px solid var(--accent-dim);
+            border-radius:20px;
+            padding:6px 14px;
+            font-size:12px;
+            letter-spacing:0.5px;
+            transition:all 0.25s ease;
+        }
+        .chip-group li:hover,
+        .chip-group li:active{
+            border-color:var(--accent);
+            box-shadow:0 0 10px var(--accent-glow);
+            background:rgba(0,255,136,0.08);
+        }
+
+        /* projects as mission-log cards */
+        .project-card{
+            border-left:2px solid var(--accent-dim);
+            padding-left:16px;
+            margin-bottom:24px;
+            transition:border-color 0.25s ease;
+        }
+        .project-card:hover{
+            border-left-color:var(--accent);
+        }
+        .project-card h2{margin-top:0;}
+        .project-card:last-child{margin-bottom:0;}
 
         #planetLabel{
             position:absolute;
-            color:#00ff88;
+            color:var(--accent);
             font-family:'Share Tech Mono', monospace;
             font-size:12px;
             pointer-events:none;
             display:none;
             text-shadow:
-            0 0 5px #00ff88,
-            0 0 10px #00ff88;
+            0 0 5px var(--accent),
+            0 0 10px var(--accent);
         }
+
+        /* onboarding hint shown on first load */
+        #onboardHint{
+            position:absolute;
+            bottom:9%;
+            left:50%;
+            transform:translateX(-50%);
+            color:var(--accent);
+            font-family:'Share Tech Mono', monospace;
+            font-size:13px;
+            letter-spacing:1px;
+            text-shadow:0 0 8px var(--accent-glow);
+            opacity:0;
+            pointer-events:none;
+            transition:opacity 1s ease;
+            text-align:center;
+        }
+        #onboardHint.show{opacity:1;}
 
         /* this is for smooth panel animation */
         #skillPanel,#projectPanel,#aboutPanel,#educationPanel,#experiencePanel,#contactPanel,#resumePanel{
@@ -255,38 +271,67 @@
             width:100%;
             padding:10px;
             margin-top:5px;
-            background:black;
-            color:#8a9da1;
-            border:1px solid #00ff88;
+            background:rgba(0,0,0,0.4);
+            color:var(--accent);
+            border:1px solid var(--accent-dim);
             font-family:'Share Tech Mono';
-            border-radius:5px;
+            border-radius:6px;
         }
-        #contactPanel button{
-            padding:10px 20px;
-            background:#5a5c5a;
-            border:none;
-            border-radius:5px;
+        #contactPanel input:focus,#contactPanel textarea:focus{
+            outline:none;
+            border-color:var(--accent);
+            box-shadow:0 0 12px var(--accent-glow);
+        }
+
+        #skillPanel button,#projectPanel button,#aboutPanel button,#educationPanel button,#experiencePanel button,#contactPanel button,#resumePanel button{
+            background:transparent;
+            border:1px solid var(--accent);
+            color:var(--accent);
+            padding:9px 20px;
+            border-radius:6px;
+            font-family:'Share Tech Mono', monospace;
+            letter-spacing:1px;
+            text-transform:uppercase;
+            font-size:11px;
+            cursor:pointer;
+            transition:all 0.25s ease;
             margin-top:10px;
+        }
+        #skillPanel button:hover,#projectPanel button:hover,#aboutPanel button:hover,#educationPanel button:hover,#experiencePanel button:hover,#contactPanel button:hover,#resumePanel button:hover,
+        #skillPanel button:active,#projectPanel button:active,#aboutPanel button:active,#educationPanel button:active,#experiencePanel button:active,#contactPanel button:active,#resumePanel button:active{
+            background:var(--accent);
+            color:#02120a;
+            box-shadow:0 0 18px var(--accent-glow);
+        }
+        #contactPanel button:disabled{
+            opacity:0.5;
+            cursor:default;
         }
 
         @media (max-width: 768px){
-            #ribbon{font-size:9px;padding:8px;}.planetInfo{font-size:9px;padding:4px 6px;}
             #skillPanel,#projectPanel,#aboutPanel,#educationPanel,#experiencePanel,#contactPanel{
                 padding:20px;}
                 #contactPanel input,#contactPanel textarea{
                     font-size:14px;
                 }
+                #onboardHint{font-size:11px;bottom:6%;padding:0 20px;}
+                #skillPanel h1,#projectPanel h1,#aboutPanel h1,#educationPanel h1,#experiencePanel h1,#contactPanel h1,#resumePanel h1{
+                    font-size:17px;
+                    letter-spacing:2px;
+                }
+        }
+
+        /* compact icon-only nav on phones: full "Sun - About Me" labels don't fit a narrow strip */
+        @media (max-width: 600px){
+            #ribbon{padding:8px 10px;gap:8px;}
+            .planetInfo{padding:8px;min-width:38px;justify-content:center;}
+            .planetInfo .navIcon{font-size:16px;}
+            .planetInfo .navLabel{display:none;}
         }
 
         body{cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><text y='30' font-size='30' fill='%2300ff88'>⊹</text></svg>") 16 16, auto;}
 
         .panel-active{opacity:1 !important;visibility:visible !important;transform:translate(-50%,-50%) !important;}
-
-        .planetInfo:hover{
-    border-color:#00ff88;
-    box-shadow:0 0 10px #00ff88;
-    transition:0.3s;
-}
 
     </style>
     
@@ -319,42 +364,46 @@
 </div>
     <script type="module" src="main.js"></script>
 
+<div id="onboardHint">Click a planet to explore &middot; drag to rotate &middot; scroll to zoom</div>
+
 <div id="ribbon">
-        <div class="planetInfo">
-            ☀️ Sun - About Me 
-        </div>    
-        <div class="planetInfo">
-            ⚪ Mercury - Education
+        <div class="planetInfo" data-url="about" role="button" tabindex="0">
+            <span class="navIcon">☀️</span><span class="navLabel">Sun - About Me</span>
         </div>
-        <div class="planetInfo">
-            🟠 Venus - Experience
+        <div class="planetInfo" data-url="education" role="button" tabindex="0">
+            <span class="navIcon">⚪</span><span class="navLabel">Mercury - Education</span>
         </div>
-        <div class="planetInfo">
-            🌍 Earth - Projects
+        <div class="planetInfo" data-url="experience" role="button" tabindex="0">
+            <span class="navIcon">🟠</span><span class="navLabel">Venus - Experience</span>
         </div>
-        <div class="planetInfo">
-            🔴 Mars - Skills
+        <div class="planetInfo" data-url="Projects" role="button" tabindex="0">
+            <span class="navIcon">🌍</span><span class="navLabel">Earth - Projects</span>
         </div>
-        <div class="planetInfo">
-            🌕 Jupter - Resume
+        <div class="planetInfo" data-url="Skills" role="button" tabindex="0">
+            <span class="navIcon">🔴</span><span class="navLabel">Mars - Skills</span>
         </div>
-        <div class="planetInfo">
-            🪐 Saturn - Contact
+        <div class="planetInfo" data-url="resume" role="button" tabindex="0">
+            <span class="navIcon">🌕</span><span class="navLabel">Jupiter - Resume</span>
+        </div>
+        <div class="planetInfo" data-url="contact" role="button" tabindex="0">
+            <span class="navIcon">🪐</span><span class="navLabel">Saturn - Contact</span>
         </div>
         <div class="planetInfo">
             <a href="resume.pdf" download style="color:#99a399; text-decoration:none;">
-                Download Resume
+                <span class="navIcon">📄</span><span class="navLabel">Download Resume</span>
             </a>
         </div>
         <div class="planetInfo">
-            <span id="musicToggle" style="cursor:pointer;">Music Off</span>
+            <span id="musicToggle" style="cursor:pointer;">
+                <span class="navIcon">🔊</span><span class="navLabel">Music Off</span>
+            </span>
         </div>
 </div>
     
 <div id="skillPanel">
         <h1>Skills</h1>
         <h2>Programming</h2>
-        <ul><li>C++</li>
+        <ul class="chip-group"><li>C++</li>
         <li>Python</li>
         <li>C</li>
         <li>C#</li>
@@ -363,14 +412,14 @@
         <li>Shell Scripting</li>
         </ul>
         <h2>Web Development</h2>
-        <ul><li>Django</li>
+        <ul class="chip-group"><li>Django</li>
         <li>ASP.NET Core</li>
         <li>Flask</li>
         <li>HTML & JavaScript</li>
         <li>REST APIs</li>
         </ul>
         <h2>Machine Learning</h2>
-        <ul>
+        <ul class="chip-group">
         <li>Pandas & NumPy</li>
         <li>Scikit-Learn</li>
         <li>TensorFlow</li>
@@ -378,7 +427,7 @@
         <li>Feature Engineering</li>
         </ul>
         <h2>Tools</h2>
-        <ul>
+        <ul class="chip-group">
         <li>Linux</li>
         <li>Git & GitHub</li>
         <li>Postman</li>
@@ -391,21 +440,27 @@
 <div id="projectPanel">
 
         <h1>Projects</h1>
+        <div class="project-card">
         <h2>Email Prioritizer</h2>
         <p>AI-powered email management system built using Flask and Machine Learning.</p>
         <ul><li>Full-stack web application with REST APIs</li>
         <li>Interactive dashboard using Plotly</li>
         <li>Reduced API latency by 20%</li></ul>
+        </div>
+        <div class="project-card">
         <h2>Student Grievance Management System</h2>
         <p>Web platform for students to submit and track grievances.</p>
         <ul><li>Built using Django and JavaScript</li>
         <li>3NF database design</li>
         <li>Admin dashboard for issue management</li></ul>
+        </div>
+        <div class="project-card">
         <h2>Heart Disease Detection</h2>
         <p>Machine learning model for predicting heart disease risk.
         </p><ul><li>Analyzed 10,000+ patient records</li>
         <li>Precision/Recall score of 0.9</li>
         <li>Built using Python and Scikit-learn</li></ul>
+        </div>
         <button onclick="closeProjects()">Back</button>
 </div>
 
